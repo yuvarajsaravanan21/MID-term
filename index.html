@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Timetable</title>
+    <style>
+        :root { --primary-color: #4a90e2; --bg-color: #f4f7f6; --text-color: #333; --highlight-day: #e3f2fd; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg-color); padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 900px; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: var(--primary-color); }
+        table { width: 100%; border-collapse: collapse; overflow: hidden; }
+        th, td { padding: 15px; text-align: center; border: 1px solid #eee; }
+        th { background-color: var(--primary-color); color: white; }
+        .current-day { background-color: var(--highlight-day) !important; font-weight: bold; }
+        @media (max-width: 600px) {
+            table, thead, tbody, th, td, tr { display: block; }
+            thead tr { position: absolute; top: -9999px; }
+            td { padding-left: 50%; position: relative; text-align: left; }
+            td:before { content: attr(data-label); position: absolute; left: 10px; font-weight: bold; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Weekly Class Schedule</h2>
+    <table id="timetable">
+        <thead><tr><th>Time</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th></tr></thead>
+        <tbody id="table-body"></tbody>
+    </table>
+</div>
+<script>
+    const scheduleData = [
+        { time: "09:00", mon: "Maths", tue: "Physics", wed: "History", thu: "Maths", fri: "English" },
+        { time: "10:00", mon: "English", tue: "Chemistry", wed: "Maths", thu: "Physics", fri: "History" }
+    ];
+    function initTimetable() {
+        const body = document.getElementById('table-body');
+        const currentDayIndex = new Date().getDay(); // 1 = Mon, 5 = Fri
+        scheduleData.forEach(row => {
+            const tr = document.createElement('tr');
+            Object.values(row).forEach((cellData, i) => {
+                const td = document.createElement('td');
+                td.innerText = cellData;
+                if (i === currentDayIndex) td.classList.add('current-day');
+                tr.appendChild(td);
+            });
+            body.appendChild(tr);
+        });
+    }
+    window.onload = initTimetable;
+</script>
+</body>
+</html>
